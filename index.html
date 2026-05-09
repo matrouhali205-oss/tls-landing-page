@@ -342,7 +342,7 @@
   <h2 class="reveal">Ready to <span class="gradient-text">Build</span>?</h2>
   <p class="reveal">Upload your sketch and tell us about your project. We'll get back to you within 2 hours.</p>
 
-  <form class="contact-form reveal" id="contactForm" action="https://formsubmit.co/support@thelayerstudio.dev" method="POST">
+  <form class="contact-form reveal" id="contactForm" action="https://formsubmit.co/support@thelayerstudio.dev" method="POST" enctype="multipart/form-data">
     <!-- Formsubmit config (hidden fields) -->
     <input type="hidden" name="_subject" value="🏗️ New Project Submission — The Layer Studio">
     <input type="hidden" name="_captcha" value="false">
@@ -386,7 +386,7 @@
     <div class="form-group">
       <label for="sketchUpload">Upload Your Sketch (optional)</label>
       <div class="file-upload" id="fileUploadArea">
-        <input type="file" id="sketchUpload" name="sketchUpload" accept="image/*,.pdf" multiple hidden>
+        <input type="file" id="sketchUpload" name="attachment" accept="image/*,.pdf" multiple style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
         <div class="file-upload-content" onclick="document.getElementById('sketchUpload').click()">
           <span class="file-upload-icon">📎</span>
           <span class="file-upload-text">Click to upload or drag & drop</span>

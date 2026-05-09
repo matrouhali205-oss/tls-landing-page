@@ -342,7 +342,12 @@
   <h2 class="reveal">Ready to <span class="gradient-text">Build</span>?</h2>
   <p class="reveal">Upload your sketch and tell us about your project. We'll get back to you within 2 hours.</p>
 
-  <form class="contact-form reveal" id="contactForm" onsubmit="handleSubmit(event)">
+  <form class="contact-form reveal" id="contactForm" action="https://formsubmit.co/support@thelayerstudio.dev" method="POST">
+    <!-- Formsubmit config (hidden fields) -->
+    <input type="hidden" name="_subject" value="🏗️ New Project Submission — The Layer Studio">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="https://thelayerstudio.net/#cta">
+    <input type="hidden" name="_template" value="table">
     <div class="form-row">
       <div class="form-group">
         <label for="fullName">Full Name *</label>

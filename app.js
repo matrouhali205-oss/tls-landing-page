@@ -203,7 +203,7 @@ function removeFile(index) {
 }
 
 // Form submission
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
   const form = document.getElementById('contactForm');
@@ -213,15 +213,47 @@ function handleSubmit(e) {
   btn.disabled = true;
   btn.style.opacity = '0.7';
 
-  // Simulate submission (replace with real API endpoint)
-  setTimeout(() => {
+  const formData = {
+    fullName: document.getElementById('fullName').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    projectType: document.getElementById('projectType').value,
+    description: document.getElementById('description').value,
+  };
+
+  try {
+    const res = await fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      form.innerHTML = `
+        <div class="form-success">
+          <h3>✅ Project Submitted!</h3>
+          <p>Thanks ${formData.fullName}! We've received your project details. Our team will review your submission and get back to you within 2 hours during business hours.</p>
+        </div>
+      `;
+    } else {
+      throw new Error(data.message);
+    }
+  } catch (err) {
+    // Fallback: open email client with form data
+    const subject = encodeURIComponent(`New Project: ${formData.projectType} — ${formData.fullName}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.fullName}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nProject Type: ${formData.projectType}\n\nDescription:\n${formData.description}`
+    );
     form.innerHTML = `
       <div class="form-success">
-        <h3>✅ Project Submitted!</h3>
-        <p>Thanks! We've received your project details. Our team will review your sketch and get back to you within 2 hours during business hours.</p>
+        <h3>📧 Almost There!</h3>
+        <p>Our form service is temporarily unavailable. Please click below to send your project details via email:</p>
+        <a href="mailto:support@thelayerstudio.dev?subject=${subject}&body=${body}" class="btn-primary" style="margin-top:20px;display:inline-flex;justify-content:center;">Send via Email →</a>
       </div>
     `;
-  }, 1500);
+  }
 }
 
 // Expose handleSubmit globally

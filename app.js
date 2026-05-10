@@ -260,6 +260,16 @@ async function handleSubmit(e) {
 window.handleSubmit = handleSubmit;
 window.removeFile = removeFile;
 
+// Package pre-selection from pricing cards
+function selectPackage(pkg) {
+  setTimeout(() => {
+    const radios = document.querySelectorAll('input[name="package"]');
+    if (pkg === 'standard' && radios[0]) radios[0].checked = true;
+    if (pkg === 'pro' && radios[1]) radios[1].checked = true;
+  }, 500);
+}
+window.selectPackage = selectPackage;
+
 
 // ====== SMOOTH ANCHOR SCROLLING ======
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {

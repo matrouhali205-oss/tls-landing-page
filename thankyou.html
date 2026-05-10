@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You — The Layer Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #f0f0f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .thankyou-card {
+      max-width: 620px;
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 60px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thankyou-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #c9a84c, #e8d48b, #c9a84c);
+    }
+
+    .check-icon {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, #c9a84c, #e8d48b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.95rem;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    .payment-box {
+      background: rgba(201,168,76,0.06);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 14px;
+      padding: 36px 32px;
+      text-align: left;
+      margin-bottom: 30px;
+    }
+
+    .payment-box h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .payment-step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(201,168,76,0.15);
+      color: #c9a84c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+      padding-top: 4px;
+    }
+
+    .step-text strong {
+      color: #f0f0f5;
+    }
+
+    .email-highlight {
+      display: inline-block;
+      background: rgba(201,168,76,0.12);
+      color: #e8d48b;
+      padding: 4px 14px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      margin: 4px 0;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .email-highlight:hover {
+      background: rgba(201,168,76,0.2);
+    }
+
+    .deposit-amounts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .deposit-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .deposit-card.active {
+      border-color: rgba(201,168,76,0.4);
+      background: rgba(201,168,76,0.06);
+    }
+
+    .deposit-card h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 6px;
+    }
+
+    .deposit-card .amount {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #c9a84c;
+    }
+
+    .deposit-card .total {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.35);
+      margin-top: 4px;
+    }
+
+    .timeline {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 28px 32px;
+      text-align: left;
+      margin-bottom: 30px;
+    }
+
+    .timeline h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .timeline-item:last-child { border: none; }
+
+    .timeline-item span:first-child {
+      font-size: 1.1rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #c9a84c;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .back-link:hover { opacity: 0.8; }
+
+    .logo-area {
+      margin-bottom: 32px;
+    }
+
+    .logo-area img {
+      height: 40px;
+      width: 40px;
+    }
+
+    @media (max-width: 600px) {
+      .thankyou-card { padding: 40px 24px; }
+      .deposit-amounts { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="thankyou-card">
+  <div class="logo-area">
+    <a href="/"><img src="images/logo.png" alt="The Layer Studio"></a>
+  </div>
+
+  <span class="check-icon">✅</span>
+  <h1>Project <span>Submitted!</span></h1>
+  <p class="subtitle">We've received your project details. To kick off your 72-hour drafting sprint, please send the 50% deposit via Interac e-Transfer.</p>
+
+  <div class="payment-box">
+    <h2>💳 Interac e-Transfer Instructions</h2>
+
+    <div class="payment-step">
+      <div class="step-num">1</div>
+      <div class="step-text">Open your <strong>banking app</strong> and go to <strong>Interac e-Transfer</strong></div>
+    </div>
+
+    <div class="payment-step">
+      <div class="step-num">2</div>
+      <div class="step-text">Send to: <br><span class="email-highlight" onclick="navigator.clipboard.writeText('support@thelayerstudio.dev'); this.innerText='✓ Copied!'">support@thelayerstudio.dev</span></div>
+    </div>
+
+    <div class="payment-step">
+      <div class="step-num">3</div>
+      <div class="step-text">Enter the <strong>deposit amount</strong> for your selected package:</div>
+    </div>
+
+    <div class="deposit-amounts">
+      <div class="deposit-card">
+        <h4>Standard</h4>
+        <div class="amount">$325</div>
+        <div class="total">of $650 total</div>
+      </div>
+      <div class="deposit-card">
+        <h4>Pro</h4>
+        <div class="amount">$425</div>
+        <div class="total">of $850 total</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <h3>⏱️ What Happens Next</h3>
+    <div class="timeline-item"><span>1️⃣</span> We confirm your e-Transfer (within 2 hours)</div>
+    <div class="timeline-item"><span>2️⃣</span> Your 72-hour drafting sprint begins</div>
+    <div class="timeline-item"><span>3️⃣</span> You receive 2D plans + 3D renders via email</div>
+    <div class="timeline-item"><span>4️⃣</span> Remaining 50% due upon approval</div>
+  </div>
+
+  <a href="/" class="back-link">← Back to The Layer Studio</a>
+</div>
+
+</body>
+</html>

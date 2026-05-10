@@ -156,7 +156,7 @@
         <li>✓ Delivered in 72 hours</li>
         <li>✓ Unlimited revisions</li>
       </ul>
-      <a href="#cta" class="btn-secondary" style="width:100%;text-align:center;margin-top:auto;">Get Started →</a>
+      <a href="#cta" class="btn-secondary" style="width:100%;text-align:center;margin-top:auto;" onclick="selectPackage('standard')">Get Started →</a>
     </div>
 
     <!-- PRO TIER -->
@@ -179,7 +179,7 @@
         <li>✓ Unlimited revisions</li>
         <li>✓ Priority support</li>
       </ul>
-      <a href="#cta" class="btn-primary" style="width:100%;text-align:center;justify-content:center;margin-top:auto;">Get Started →</a>
+      <a href="#cta" class="btn-primary" style="width:100%;text-align:center;justify-content:center;margin-top:auto;" onclick="selectPackage('pro')">Get Started →</a>
     </div>
   </div>
 </section>
@@ -343,11 +343,47 @@
   <p class="reveal">Upload your sketch and tell us about your project. We'll get back to you within 2 hours.</p>
 
   <form class="contact-form reveal" id="contactForm" action="https://formsubmit.co/support@thelayerstudio.dev" method="POST" enctype="multipart/form-data">
-    <!-- Formsubmit config (hidden fields) -->
+    <!-- Formsubmit config -->
     <input type="hidden" name="_subject" value="🏗️ New Project Submission — The Layer Studio">
     <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_next" value="https://thelayerstudio.net/#cta">
+    <input type="hidden" name="_next" value="https://thelayerstudio.net/thankyou.html">
     <input type="hidden" name="_template" value="table">
+
+    <!-- Package Selection -->
+    <div class="form-group">
+      <label>Select Your Package *</label>
+      <div class="package-selector">
+        <label class="package-option" id="pkgStandard">
+          <input type="radio" name="package" value="Standard — $650" required>
+          <div class="package-option-content">
+            <div class="package-option-header">
+              <span class="package-option-name">📐 Standard</span>
+              <span class="package-option-price">$650</span>
+            </div>
+            <span class="package-option-desc">Under 1,000 sq. ft.</span>
+            <div class="package-deposit-info">
+              <span>50% deposit to start:</span>
+              <strong>$325 CAD</strong>
+            </div>
+          </div>
+        </label>
+        <label class="package-option" id="pkgPro">
+          <input type="radio" name="package" value="Pro — $850">
+          <div class="package-option-content">
+            <div class="package-option-header">
+              <span class="package-option-name">🏗️ Pro</span>
+              <span class="package-option-price">$850</span>
+            </div>
+            <span class="package-option-desc">Over 1,000 sq. ft.</span>
+            <div class="package-deposit-info">
+              <span>50% deposit to start:</span>
+              <strong>$425 CAD</strong>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
     <div class="form-row">
       <div class="form-group">
         <label for="fullName">Full Name *</label>
@@ -367,15 +403,15 @@
         <label for="projectType">Project Type *</label>
         <select id="projectType" name="projectType" required>
           <option value="" disabled selected>Select your project</option>
-          <option value="garage">Detached Garage</option>
-          <option value="addition">Home Addition</option>
-          <option value="basement">Basement Finish</option>
-          <option value="deck">Deck / Patio</option>
-          <option value="renovation">Whole-House Renovation</option>
-          <option value="newbuild">New Home Build</option>
-          <option value="laneway">Laneway Suite / ADU</option>
-          <option value="commercial">Commercial</option>
-          <option value="other">Other</option>
+          <option value="Detached Garage">Detached Garage</option>
+          <option value="Home Addition">Home Addition</option>
+          <option value="Basement Finish">Basement Finish</option>
+          <option value="Deck / Patio">Deck / Patio</option>
+          <option value="Whole-House Renovation">Whole-House Renovation</option>
+          <option value="New Home Build">New Home Build</option>
+          <option value="Laneway Suite / ADU">Laneway Suite / ADU</option>
+          <option value="Commercial">Commercial</option>
+          <option value="Other">Other</option>
         </select>
       </div>
     </div>
@@ -396,9 +432,9 @@
       </div>
     </div>
     <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:18px;font-size:1rem;" id="submitBtn">
-      Submit Your Project →
+      Submit & Continue to Payment →
     </button>
-    <p class="form-note">⚡ We respond within 2 hours during business hours</p>
+    <p class="form-note">🔒 Secure submission · 50% deposit via Interac e-Transfer to start</p>
   </form>
 </section>
 

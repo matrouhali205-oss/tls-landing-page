@@ -208,57 +208,66 @@ async function handleSubmit(e) {
   const btn = document.getElementById('submitBtn');
   const form = document.getElementById('contactForm');
 
-  // Show loading state
   btn.innerHTML = '⏳ Submitting...';
   btn.disabled = true;
   btn.style.opacity = '0.7';
 
-  const formData = {
-    fullName: document.getElementById('fullName').value,
-    email: document.getElementById('email').value,
-    phone: document.getElementById('phone').value,
-    projectType: document.getElementById('projectType').value,
-    description: document.getElementById('description').value,
-  };
+  const fullName = document.getElementById('fullName').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const projectType = document.getElementById('projectType').value;
+  const description = document.getElementById('description').value;
+  const pkg = form.querySelector('input[name="package"]:checked')?.value || '';
 
   try {
-    const res = await fetch('/api/submit', {
+    const data = new FormData();
+    data.append('fullName', fullName);
+    data.append('email', email);
+    data.append('phone', phone);
+    data.append('projectType', projectType);
+    data.append('description', description);
+    data.append('package', pkg);
+    data.append('_subject', '🏗️ New Project Submission — The Layer Studio');
+    data.append('_captcha', 'false');
+    data.append('_template', 'table');
+    data.append('_autoresponse', 'Thank you for choosing The Layer Studio! If you selected a Standard or Pro package, this email serves as your formal deposit invoice (Standard: $325 CAD | Pro: $425 CAD). If you selected Custom Quote, our team will review your project and send you a custom invoice shortly. Please send your deposit via Interac e-Transfer to payment@thelayerstudio.dev. Once your transfer is received, our drafting team will begin immediately!');
+
+    const fileInput = document.getElementById('sketchUpload');
+    if (fileInput && fileInput.files.length > 0) {
+      Array.from(fileInput.files).forEach(file => data.append('attachment', file));
+    }
+
+    const res = await fetch('https://formsubmit.co/ajax/support@thelayerstudio.dev', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
+      headers: { 'Accept': 'application/json' },
+      body: data,
     });
 
-    const data = await res.json();
-
-    if (data.success) {
-      form.innerHTML = `
-        <div class="form-success">
-          <h3>✅ Project Submitted!</h3>
-          <p>Thanks ${formData.fullName}! We've received your project details. Our team will review your submission and get back to you within 2 hours during business hours.</p>
-        </div>
-      `;
+    if (res.ok) {
+      window.location.href = 'thankyou.html';
     } else {
-      throw new Error(data.message);
+      throw new Error('Submission failed');
     }
   } catch (err) {
-    // Fallback: open email client with form data
-    const subject = encodeURIComponent(`New Project: ${formData.projectType} — ${formData.fullName}`);
+    const subject = encodeURIComponent(`New Project: ${projectType} — ${fullName}`);
     const body = encodeURIComponent(
-      `Name: ${formData.fullName}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nProject Type: ${formData.projectType}\n\nDescription:\n${formData.description}`
+      `Name: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nProject Type: ${projectType}\nPackage: ${pkg}\n\nDescription:\n${description}`
     );
     form.innerHTML = `
       <div class="form-success">
         <h3>📧 Almost There!</h3>
-        <p>Our form service is temporarily unavailable. Please click below to send your project details via email:</p>
+        <p>Our form service is temporarily unavailable. Please send your details directly — we'll respond within 2 hours.</p>
         <a href="mailto:support@thelayerstudio.dev?subject=${subject}&body=${body}" class="btn-primary" style="margin-top:20px;display:inline-flex;justify-content:center;">Send via Email →</a>
       </div>
     `;
   }
 }
 
-// Expose handleSubmit globally
-window.handleSubmit = handleSubmit;
 window.removeFile = removeFile;
+
+// Wire form to handleSubmit so JS intercepts before the native POST
+const contactForm = document.getElementById('contactForm');
+if (contactForm) contactForm.addEventListener('submit', handleSubmit);
 
 // Package pre-selection from pricing cards
 function selectPackage(pkg) {
@@ -266,6 +275,7 @@ function selectPackage(pkg) {
     const radios = document.querySelectorAll('input[name="package"]');
     if (pkg === 'standard' && radios[0]) radios[0].checked = true;
     if (pkg === 'pro' && radios[1]) radios[1].checked = true;
+    if (pkg === 'custom' && radios[2]) radios[2].checked = true;
   }, 500);
 }
 window.selectPackage = selectPackage;

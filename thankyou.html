@@ -7,6 +7,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --accent: #c9a84c;
+      --accent-light: #e8d48b;
+      --text-primary: #f0f0f5;
+      --text-secondary: #a0a0b8;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
@@ -56,6 +63,7 @@
     h1 span {
       background: linear-gradient(135deg, #c9a84c, #e8d48b);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
@@ -135,7 +143,7 @@
 
     .deposit-amounts {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 12px;
       margin-top: 20px;
     }
@@ -241,10 +249,10 @@
 
   <span class="check-icon">✅</span>
   <h1>Project <span>Submitted!</span></h1>
-  <p class="subtitle">We've received your project details. To kick off your 72-hour drafting sprint, please send the 50% deposit via Interac e-Transfer.</p>
+  <p class="subtitle">If you selected the Standard or Pro package, your deposit invoice has been emailed to you. You can pay your deposit via Interac e-Transfer using the details below to kick off your drafting sprint right now.<br><br><span style="color: var(--accent);"><strong>If you requested a Custom Quote, please ignore the deposit instructions below. Our team will review your project and email you a custom quote shortly. No deposit is required yet!</strong></span></p>
 
   <div class="payment-box">
-    <h2>💳 Interac e-Transfer Instructions</h2>
+    <h2>🧾 Deposit Invoice Details (Interac e-Transfer)</h2>
 
     <div class="payment-step">
       <div class="step-num">1</div>
@@ -253,7 +261,7 @@
 
     <div class="payment-step">
       <div class="step-num">2</div>
-      <div class="step-text">Send to: <br><span class="email-highlight" onclick="navigator.clipboard.writeText('support@thelayerstudio.dev'); this.innerText='✓ Copied!'">support@thelayerstudio.dev</span></div>
+      <div class="step-text">Send to: <br><span class="email-highlight" onclick="navigator.clipboard.writeText('payment@thelayerstudio.dev'); this.innerText='✓ Copied!'">payment@thelayerstudio.dev</span></div>
     </div>
 
     <div class="payment-step">
@@ -271,6 +279,11 @@
         <h4>Pro</h4>
         <div class="amount">$425</div>
         <div class="total">of $850 total</div>
+      </div>
+      <div class="deposit-card" style="background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.1);">
+        <h4 style="color: var(--text-primary)">Custom</h4>
+        <div class="amount" style="color: var(--text-secondary); font-size: 1.5rem; margin-top:10px;">Pending</div>
+        <div class="total" style="font-size: 0.8rem">We will email you</div>
       </div>
     </div>
   </div>

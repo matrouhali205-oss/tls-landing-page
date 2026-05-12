@@ -221,32 +221,34 @@ async function handleSubmit(e) {
 
   try {
     const data = new FormData();
-    data.append('fullName', fullName);
+    data.append('access_key', window.WEB3FORMS_KEY || '');
+    data.append('subject', '🏗️ New Project Submission — The Layer Studio');
+    data.append('from_name', 'The Layer Studio Website');
+    data.append('name', fullName);
     data.append('email', email);
-    data.append('phone', phone);
-    data.append('projectType', projectType);
+    data.append('phone', phone || 'Not provided');
+    data.append('project_type', projectType);
+    data.append('package', pkg || 'Not selected');
     data.append('description', description);
-    data.append('package', pkg);
-    data.append('_subject', '🏗️ New Project Submission — The Layer Studio');
-    data.append('_captcha', 'false');
-    data.append('_template', 'table');
-    data.append('_autoresponse', 'Thank you for choosing The Layer Studio! If you selected a Standard or Pro package, this email serves as your formal deposit invoice (Standard: $325 CAD | Pro: $425 CAD). If you selected Custom Quote, our team will review your project and send you a custom invoice shortly. Please send your deposit via Interac e-Transfer to payment@thelayerstudio.dev. Once your transfer is received, our drafting team will begin immediately!');
+    data.append('redirect', 'false');
 
     const fileInput = document.getElementById('sketchUpload');
     if (fileInput && fileInput.files.length > 0) {
       Array.from(fileInput.files).forEach(file => data.append('attachment', file));
     }
 
-    const res = await fetch('https://formsubmit.co/ajax/support@thelayerstudio.dev', {
+    const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Accept': 'application/json' },
       body: data,
     });
 
-    if (res.ok) {
+    const result = await res.json();
+
+    if (result.success) {
       window.location.href = 'thankyou.html';
     } else {
-      throw new Error('Submission failed');
+      throw new Error(result.message || 'Submission failed');
     }
   } catch (err) {
     const subject = encodeURIComponent(`New Project: ${projectType} — ${fullName}`);

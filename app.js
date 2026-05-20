@@ -204,7 +204,7 @@ function initSubmitForm() {
 
     try {
       const data = new FormData();
-      data.append('access_key',  '338b1101-acbd-44f5-bb36-eeda1c3a1864');
+      data.append('access_key',  '04046661-ae67-42d9-b452-cb46f0b36a20');
       data.append('subject',     '🏗️ New Project — TLS Studio (' + selectedType + ')');
       data.append('from_name',   'TLS Studio Website');
       data.append('redirect',    'false');

@@ -247,6 +247,7 @@ function initSubmitForm() {
         body: data,
       });
       const result = await res.json();
+      console.log('Web3Forms response:', result);
 
       if (result.success) {
         submitFormEl.classList.add('hidden');
@@ -257,15 +258,17 @@ function initSubmitForm() {
       } else {
         throw new Error(result.message || 'Submission failed');
       }
-    } catch {
+    } catch (err) {
+      console.error('Form submission error:', err);
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit Project →';
       const subject = encodeURIComponent('New Project — ' + selectedType + ' — ' + nameVal);
       const body    = encodeURIComponent('Name: ' + nameVal + '\nEmail: ' + emailVal + '\nType: ' + selectedType);
       const prev = submitFormEl.querySelector('.error-banner');
       if (prev) prev.remove();
+      const errMsg = err.message ? ` (${err.message})` : '';
       submitFormEl.insertAdjacentHTML('afterbegin',
-        `<div class="error-banner">Form service unavailable. ` +
+        `<div class="error-banner">Form error${errMsg}. ` +
         `<a href="mailto:support@thelayerstudio.dev?subject=${subject}&body=${body}">Send via email →</a></div>`);
     }
   });

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit a Project — TLS Studio</title>
+  <meta name="description" content="Submit your project to TLS Studio — precision drafting for contractors, real estate agents, and homeowners.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav nav-dark" id="mainNav">
+  <a href="index.html" class="nav-logo">TLS STUDIO</a>
+  <div class="nav-links">
+    <a href="index.html">Work</a>
+    <a href="services.html">Services</a>
+    <a href="profile.html">Profile</a>
+    <a href="submit.html" class="nav-cta active">Submit a Project</a>
+  </div>
+  <button type="button" class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="index.html">Work</a>
+  <a href="services.html">Services</a>
+  <a href="profile.html">Profile</a>
+  <a href="submit.html" class="mobile-cta">Submit a Project</a>
+</div>
+
+<main class="page">
+  <div class="submit-wrap">
+
+    <div class="submit-header">
+      <h1 class="submit-h1">Start Your<br>Project.</h1>
+      <p class="submit-sub">Tell us about your needs and we'll provide a quote and timeline — usually within 2 hours.</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="step-bar">
+      <div class="step-dot active" id="dot1">1</div>
+      <div class="step-line"></div>
+      <div class="step-dot" id="dot2">2</div>
+      <span class="step-label" id="stepLabel">I am a…</span>
+    </div>
+
+    <!-- STEP 1: Client type qualifier -->
+    <div id="step1">
+      <div class="client-cards">
+
+        <label class="c-card">
+          <input type="radio" name="clientType" value="contractor">
+          <div class="c-label">
+            <span class="c-num">01</span>
+            <span class="c-name">General Contractor / Builder</span>
+            <span class="c-desc">Permit drawings, overflow drafting, BCIN packages, and site plans.</span>
+          </div>
+        </label>
+
+        <label class="c-card">
+          <input type="radio" name="clientType" value="realest">
+          <div class="c-label">
+            <span class="c-num">02</span>
+            <span class="c-name">Real Estate Agent</span>
+            <span class="c-desc">Marketing floor plans and 3D visuals for listings.</span>
+          </div>
+        </label>
+
+        <label class="c-card">
+          <input type="radio" name="clientType" value="homeowner">
+          <div class="c-label">
+            <span class="c-num">03</span>
+            <span class="c-name">Homeowner / Private Client</span>
+            <span class="c-desc">Renovation, addition, or new build drawings from your sketches.</span>
+          </div>
+        </label>
+
+      </div>
+
+      <button type="button" class="btn-submit" id="nextBtn">Next →</button>
+    </div>
+
+    <!-- STEP 2: Conditional project details -->
+    <form id="submitForm" class="hidden" novalidate>
+
+      <button type="button" class="btn-back" id="backBtn">← Back</button>
+
+      <!-- Shared: contact info -->
+      <p class="section-title">Your Info</p>
+      <div class="row-2">
+        <div class="field">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Jane Smith" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="jane@example.com" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="phone">Phone <span class="label-hint">(optional)</span></label>
+        <input type="tel" id="phone" name="phone" placeholder="+1 (416) 000-0000">
+      </div>
+
+      <!-- ── CONTRACTOR ── -->
+      <div class="form-section" id="form-contractor">
+        <p class="section-title">Project Details</p>
+        <div class="row-2">
+          <div class="field">
+            <label for="company">Company Name</label>
+            <input type="text" id="company" name="company" placeholder="Acme Construction Ltd.">
+          </div>
+          <div class="field">
+            <label for="projectType">Project Type</label>
+            <select id="projectType" name="project_type">
+              <option value="" disabled selected>Select type</option>
+              <option>New Build</option>
+              <option>Major Reno</option>
+              <option>Basement</option>
+              <option>Overflow Support</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Services Needed</label>
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" name="services" value="Permit Drawings"><span>Permit Drawings</span></label>
+            <label class="check-item"><input type="checkbox" name="services" value="As-Builts"><span>As-Builts</span></label>
+            <label class="check-item"><input type="checkbox" name="services" value="3D Renders"><span>3D Renders</span></label>
+            <label class="check-item"><input type="checkbox" name="services" value="Site Plan"><span>Site Plan</span></label>
+            <label class="check-item"><input type="checkbox" name="services" value="BCIN Package"><span>BCIN Package</span></label>
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label for="contractorAddress">Project Address / Location</label>
+            <input type="text" id="contractorAddress" name="project_address" placeholder="123 Main St, Toronto">
+          </div>
+          <div class="field">
+            <label for="timeline">Required Timeline</label>
+            <select id="timeline" name="timeline">
+              <option value="" disabled selected>Select timeline</option>
+              <option>ASAP (Rush)</option>
+              <option>Within 1 Week</option>
+              <option>Within 2 Weeks</option>
+              <option>Within a Month</option>
+              <option>Flexible</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Upload Files <span class="label-hint">(plans, specs, site photos)</span></label>
+          <div class="upload-zone" id="uploadZone">
+            <input type="file" id="fileUpload" aria-label="Upload plans, specs, or site photos" multiple accept="image/*,.pdf,.dwg,.dxf">
+            <div class="upload-icon">📎</div>
+            <p class="upload-text">Drop files here or click to browse</p>
+            <p class="upload-hint">PNG, JPG, PDF, DWG — max 10 MB each</p>
+          </div>
+          <div class="file-chips" id="fileChips"></div>
+        </div>
+      </div>
+
+      <!-- ── REAL ESTATE ── -->
+      <div class="form-section" id="form-realest">
+        <p class="section-title">Project Details</p>
+        <div class="field">
+          <label for="brokerage">Brokerage</label>
+          <input type="text" id="brokerage" name="brokerage" placeholder="Royal LePage Toronto">
+        </div>
+        <div class="field">
+          <label>Services Needed</label>
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" name="services" value="Marketing 2D Plans"><span>Marketing 2D Floor Plans</span></label>
+            <label class="check-item"><input type="checkbox" name="services" value="3D Staging / Renders"><span>3D Staging / Renders</span></label>
+            <label class="check-item"><input type="checkbox" name="services" value="Property Documentation"><span>Property Documentation</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Do you have existing measurements?</label>
+          <p class="field-note">If No, a site visit will be required.</p>
+          <div class="yn-pair">
+            <div class="yn-opt">
+              <input type="radio" name="has_measurements" id="meas_yes" value="Yes — I have measurements">
+              <label for="meas_yes">Yes</label>
+            </div>
+            <div class="yn-opt">
+              <input type="radio" name="has_measurements" id="meas_no" value="No — site visit needed">
+              <label for="meas_no">No — need site visit</label>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Upload Files <span class="label-hint">(existing sketches or old plans)</span></label>
+          <div class="upload-zone" id="uploadZoneRE">
+            <input type="file" id="fileUploadRE" aria-label="Upload existing sketches or old plans" multiple accept="image/*,.pdf,.dwg,.dxf">
+            <div class="upload-icon">📎</div>
+            <p class="upload-text">Drop files here or click to browse</p>
+            <p class="upload-hint">PNG, JPG, PDF, DWG — max 10 MB each</p>
+          </div>
+          <div class="file-chips" id="fileChipsRE"></div>
+        </div>
+      </div>
+
+      <!-- ── HOMEOWNER ── -->
+      <div class="form-section" id="form-homeowner">
+        <p class="section-title">Project Details</p>
+        <div class="field">
+          <label for="projectGoal">Project Goal</label>
+          <input type="text" id="projectGoal" name="project_goal" placeholder="e.g. Kitchen extension, basement addition, new build…">
+        </div>
+        <div class="field">
+          <label>Do you have sketches or measurements?</label>
+          <div class="yn-pair">
+            <div class="yn-opt">
+              <input type="radio" name="has_sketches" id="sketches_yes" value="Yes">
+              <label for="sketches_yes">Yes</label>
+            </div>
+            <div class="yn-opt">
+              <input type="radio" name="has_sketches" id="sketches_no" value="No">
+              <label for="sketches_no">No</label>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="budget">Estimated Budget for Design Work</label>
+          <select id="budget" name="budget">
+            <option value="" disabled selected>Select range</option>
+            <option>Under $500</option>
+            <option>$500 – $1,000</option>
+            <option>$1,000 – $2,500</option>
+            <option>$2,500+</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Upload Your Sketches / Photos <span class="label-hint">(crucial — helps us scope accurately)</span></label>
+          <div class="upload-zone" id="uploadZoneHO">
+            <input type="file" id="fileUploadHO" aria-label="Upload your sketches or photos" multiple accept="image/*,.pdf">
+            <div class="upload-icon">📎</div>
+            <p class="upload-text">Drop your sketches or photos here</p>
+            <p class="upload-hint">PNG, JPG, PDF — max 10 MB each</p>
+          </div>
+          <div class="file-chips" id="fileChipsHO"></div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">Submit Project →</button>
+
+    </form>
+
+    <!-- Success state -->
+    <div class="success-state" id="successState">
+      <h2 class="success-h">Project<br>Received.</h2>
+      <p class="success-p">We'll review your submission and reach out within 2 business hours at the email you provided.</p>
+      <span class="success-email">support@thelayerstudio.dev</span>
+      <br>
+      <a href="index.html" class="btn-home">Back to Work →</a>
+    </div>
+
+  </div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

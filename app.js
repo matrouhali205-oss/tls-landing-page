@@ -1,323 +1,272 @@
-// ================================================
-// THE LAYER STUDIO — Landing Page Animations
-// GSAP ScrollTrigger + Video Background Hero
-// ================================================
-
-gsap.registerPlugin(ScrollTrigger);
-
-
-// ====== NAVBAR ======
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-});
+// ===== NAV: transparent over hero, darkens on scroll =====
+const mainNav = document.getElementById('mainNav');
+if (mainNav) {
+  const onScroll = () => mainNav.classList.toggle('scrolled', window.scrollY > 60);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // run once on load
+}
 
 
-// ====== HERO CONTENT ENTRANCE ======
-const heroTl = gsap.timeline({ delay: 0.4 });
-heroTl
-  .from('.hero-badge', { y: 30, opacity: 0, duration: 0.8, ease: 'power3.out' })
-  .from('.hero h1', { y: 50, opacity: 0, duration: 1, ease: 'power3.out' }, '-=0.5')
-  .from('.hero .subtitle', { y: 30, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-  .from('.hero-buttons', { y: 30, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5')
-  .from('.scroll-indicator', { opacity: 0, duration: 1, ease: 'power2.out' }, '-=0.3');
+// ===== MOBILE NAV DRAWER =====
+const navToggle = document.getElementById('navToggle');
+const mobileDrawer = document.getElementById('mobileDrawer');
 
-
-// ====== HERO SCROLL PARALLAX (content fades, video stays) ======
-gsap.to('.hero-content', {
-  y: -80, opacity: 0, ease: 'none',
-  scrollTrigger: {
-    trigger: '.hero', start: '20% top', end: 'bottom top',
-    scrub: 1,
-  }
-});
-
-gsap.to('.scroll-indicator', {
-  opacity: 0, ease: 'none',
-  scrollTrigger: {
-    trigger: '.hero', start: '10% top', end: '30% top',
-    scrub: true,
-  }
-});
-
-
-// ====== STATS COUNTER ======
-function animateCounters() {
-  document.querySelectorAll('.stat-number').forEach(el => {
-    const target = parseInt(el.dataset.count);
-    const duration = 2000;
-    const start = performance.now();
-    function update(now) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const suffix = (el.dataset.count === '98' || el.dataset.count === '85') ? '%' : '+';
-      el.textContent = Math.floor(target * eased) + suffix;
-      if (progress < 1) requestAnimationFrame(update);
+if (navToggle && mobileDrawer) {
+  navToggle.addEventListener('click', () => {
+    const isOpen = mobileDrawer.classList.toggle('open');
+    const spans = navToggle.querySelectorAll('span');
+    if (isOpen) {
+      spans[0].style.transform = 'translateY(6.5px) rotate(45deg)';
+      spans[1].style.opacity = '0';
+      spans[2].style.transform = 'translateY(-6.5px) rotate(-45deg)';
+    } else {
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
     }
-    requestAnimationFrame(update);
+  });
+
+  mobileDrawer.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileDrawer.classList.remove('open');
+      const spans = navToggle.querySelectorAll('span');
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
+    });
   });
 }
 
-ScrollTrigger.create({
-  trigger: '.stats-bar',
-  start: 'top 80%',
-  once: true,
-  onEnter: animateCounters,
-});
 
-
-// ====== REVEAL ON SCROLL ======
-const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-const revealObserver = new IntersectionObserver((entries) => {
+// ===== SCROLL REVEAL =====
+const srObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObserver.unobserve(entry.target);
+      entry.target.classList.add('in');
+      srObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-revealElements.forEach(el => revealObserver.observe(el));
+}, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+
+document.querySelectorAll('.sr').forEach(el => srObserver.observe(el));
 
 
-// ====== PROCESS STEPS ======
-document.querySelectorAll('.process-step').forEach((step, i) => {
-  ScrollTrigger.create({
-    trigger: step,
-    start: 'top 75%',
-    onEnter: () => {
-      step.classList.add('visible');
-      step.style.transitionDelay = `${i * 0.1}s`;
-    },
-  });
-});
+// ===== STATS COUNTER =====
+function animateCounter(el) {
+  const target = parseInt(el.dataset.count, 10);
+  const suffix = el.dataset.suffix || '';
+  const duration = 1800;
+  const start = performance.now();
 
-// Process timeline fill
-ScrollTrigger.create({
-  trigger: '.process-timeline',
-  start: 'top 60%',
-  end: 'bottom 40%',
-  scrub: true,
-  onUpdate: (self) => {
-    const fill = document.getElementById('processLineFill');
-    if (fill) fill.style.height = `${self.progress * 100}%`;
-  },
-});
+  function tick(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(target * eased) + suffix;
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
 
-
-// ====== SERVICE CARDS ======
-document.querySelectorAll('.service-card').forEach((card, i) => {
-  gsap.fromTo(card,
-    { y: 50, opacity: 0 },
-    {
-      y: 0, opacity: 1, duration: 0.9, delay: i * 0.2,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: card, start: 'top 85%', once: true },
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && entry.target.dataset.count) {
+      animateCounter(entry.target);
+      counterObserver.unobserve(entry.target);
     }
-  );
-});
-
-
-// ====== MARQUEE DUPLICATION (for infinite scroll) ======
-document.querySelectorAll('.marquee-track').forEach(track => {
-  // Clone all cards and append to create seamless infinite loop
-  const cards = track.querySelectorAll('.testimonial-card');
-  cards.forEach(card => {
-    const clone = card.cloneNode(true);
-    track.appendChild(clone);
   });
-});
+}, { threshold: 0.5 });
+
+document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
 
 
-// ====== PARALLAX ON IMAGES ======
-document.querySelectorAll('.process-step-image img, .why-image img').forEach(img => {
-  gsap.to(img, {
-    y: -30,
-    scrollTrigger: {
-      trigger: img,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: 1.5,
-    },
-  });
-});
-
-
-// ====== CTA SECTION ======
-document.querySelectorAll('.cta-section .reveal').forEach((el, i) => {
-  gsap.fromTo(el,
-    { y: 40, opacity: 0 },
-    {
-      y: 0, opacity: 1, duration: 0.9, delay: i * 0.15,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+// ===== SVG DRAWING ANIMATION =====
+const drawObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.draw-path, .draw-path-gold').forEach(path => {
+        path.classList.add('animate');
+      });
+      drawObserver.unobserve(entry.target);
     }
-  );
-});
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.arch-drawing').forEach(el => drawObserver.observe(el));
 
 
-// ====== CONTACT FORM ======
-// File upload preview
-const fileInput = document.getElementById('sketchUpload');
-const filePreview = document.getElementById('filePreview');
-const uploadArea = document.getElementById('fileUploadArea');
+// ===== SUBMIT FORM (submit.html only) =====
+const step1El = document.getElementById('step1');
+const submitFormEl = document.getElementById('submitForm');
 
-if (fileInput && filePreview) {
-  fileInput.addEventListener('change', () => updateFilePreview());
+if (step1El && submitFormEl) {
+  initSubmitForm();
+}
 
-  // Drag and drop
-  if (uploadArea) {
-    uploadArea.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      uploadArea.classList.add('drag-over');
-    });
-    uploadArea.addEventListener('dragleave', () => {
-      uploadArea.classList.remove('drag-over');
-    });
-    uploadArea.addEventListener('drop', (e) => {
-      e.preventDefault();
-      uploadArea.classList.remove('drag-over');
-      fileInput.files = e.dataTransfer.files;
-      updateFilePreview();
+function initSubmitForm() {
+  const nextBtn      = document.getElementById('nextBtn');
+  const backBtn      = document.getElementById('backBtn');
+  const dot1         = document.getElementById('dot1');
+  const dot2         = document.getElementById('dot2');
+  const stepLabel    = document.getElementById('stepLabel');
+  const successState = document.getElementById('successState');
+  const stepBar      = document.querySelector('.step-bar');
+
+  let selectedType = '';
+
+  document.querySelectorAll('input[name="clientType"]').forEach(input => {
+    input.addEventListener('change', () => { selectedType = input.value; });
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (!selectedType) {
+      const cards = document.querySelector('.client-cards');
+      cards.style.outline = '1.5px solid #c9a84c';
+      setTimeout(() => { cards.style.outline = ''; }, 1400);
+      return;
+    }
+    step1El.style.display = 'none';
+    submitFormEl.classList.remove('hidden');
+    dot1.classList.remove('active');
+    dot1.classList.add('done');
+    dot2.classList.add('active');
+    stepLabel.textContent = 'Project Details';
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('show'));
+    const section = document.getElementById('form-' + selectedType);
+    if (section) section.classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  backBtn.addEventListener('click', () => {
+    submitFormEl.classList.add('hidden');
+    step1El.style.display = 'block';
+    dot2.classList.remove('active');
+    dot1.classList.remove('done');
+    dot1.classList.add('active');
+    stepLabel.textContent = 'I am a…';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  wireUpload('fileUpload',   'fileChips',   'uploadZone');
+  wireUpload('fileUploadRE', 'fileChipsRE', 'uploadZoneRE');
+  wireUpload('fileUploadHO', 'fileChipsHO', 'uploadZoneHO');
+
+  function wireUpload(inputId, chipsId, zoneId) {
+    const input = document.getElementById(inputId);
+    const chips = document.getElementById(chipsId);
+    const zone  = document.getElementById(zoneId);
+    if (!input || !chips) return;
+
+    input.addEventListener('change', () => renderChips(input, chips));
+
+    if (zone) {
+      zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('over'); });
+      zone.addEventListener('dragleave', ()  => zone.classList.remove('over'));
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('over');
+        input.files = e.dataTransfer.files;
+        renderChips(input, chips);
+      });
+    }
+
+    window['removeChip_' + inputId] = function(index) {
+      const dt = new DataTransfer();
+      Array.from(input.files).forEach((f, i) => { if (i !== index) dt.items.add(f); });
+      input.files = dt.files;
+      renderChips(input, chips);
+    };
+  }
+
+  function renderChips(input, chips) {
+    chips.innerHTML = '';
+    Array.from(input.files).forEach((file, i) => {
+      const chip = document.createElement('div');
+      chip.className = 'chip';
+      chip.innerHTML =
+        `<span>${file.name}</span>` +
+        `<button type="button" onclick="removeChip_${input.id}(${i})">×</button>`;
+      chips.appendChild(chip);
     });
   }
-}
 
-function updateFilePreview() {
-  if (!filePreview || !fileInput) return;
-  filePreview.innerHTML = '';
-  Array.from(fileInput.files).forEach((file, i) => {
-    const item = document.createElement('div');
-    item.className = 'file-preview-item';
-    item.innerHTML = `📄 ${file.name} <span class="remove-file" onclick="removeFile(${i})">✕</span>`;
-    filePreview.appendChild(item);
-  });
-}
-
-function removeFile(index) {
-  const dt = new DataTransfer();
-  Array.from(fileInput.files).forEach((file, i) => {
-    if (i !== index) dt.items.add(file);
-  });
-  fileInput.files = dt.files;
-  updateFilePreview();
-}
-
-// Form submission
-async function handleSubmit(e) {
-  e.preventDefault();
-  const btn = document.getElementById('submitBtn');
-  const form = document.getElementById('contactForm');
-
-  btn.innerHTML = '⏳ Submitting...';
-  btn.disabled = true;
-  btn.style.opacity = '0.7';
-
-  const fullName = document.getElementById('fullName').value;
-  const email = document.getElementById('email').value;
-  const phone = document.getElementById('phone').value;
-  const projectType = document.getElementById('projectType').value;
-  const description = document.getElementById('description').value;
-  const pkg = form.querySelector('input[name="package"]:checked')?.value || '';
-
-  try {
-    const data = new FormData();
-    data.append('access_key', window.WEB3FORMS_KEY || '');
-    data.append('subject', '🏗️ New Project Submission — The Layer Studio');
-    data.append('from_name', 'The Layer Studio Website');
-    data.append('name', fullName);
-    data.append('email', email);
-    data.append('phone', phone || 'Not provided');
-    data.append('project_type', projectType);
-    data.append('package', pkg || 'Not selected');
-    data.append('description', description);
-    data.append('redirect', 'false');
-
-    const fileInput = document.getElementById('sketchUpload');
-    if (fileInput && fileInput.files.length > 0) {
-      Array.from(fileInput.files).forEach(file => data.append('attachment', file));
-    }
-
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: data,
-    });
-
-    const result = await res.json();
-
-    if (result.success) {
-      window.location.href = 'thankyou.html';
-    } else {
-      throw new Error(result.message || 'Submission failed');
-    }
-  } catch (err) {
-    const subject = encodeURIComponent(`New Project: ${projectType} — ${fullName}`);
-    const body = encodeURIComponent(
-      `Name: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nProject Type: ${projectType}\nPackage: ${pkg}\n\nDescription:\n${description}`
-    );
-    form.innerHTML = `
-      <div class="form-success">
-        <h3>📧 Almost There!</h3>
-        <p>Our form service is temporarily unavailable. Please send your details directly — we'll respond within 2 hours.</p>
-        <a href="mailto:support@thelayerstudio.dev?subject=${subject}&body=${body}" class="btn-primary" style="margin-top:20px;display:inline-flex;justify-content:center;">Send via Email →</a>
-      </div>
-    `;
-  }
-}
-
-window.removeFile = removeFile;
-
-// Wire form to handleSubmit so JS intercepts before the native POST
-const contactForm = document.getElementById('contactForm');
-if (contactForm) contactForm.addEventListener('submit', handleSubmit);
-
-// Package pre-selection from pricing cards
-function selectPackage(pkg) {
-  setTimeout(() => {
-    const radios = document.querySelectorAll('input[name="package"]');
-    if (pkg === 'standard' && radios[0]) radios[0].checked = true;
-    if (pkg === 'pro' && radios[1]) radios[1].checked = true;
-    if (pkg === 'custom' && radios[2]) radios[2].checked = true;
-  }, 500);
-}
-window.selectPackage = selectPackage;
-
-
-// ====== SMOOTH ANCHOR SCROLLING ======
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', (e) => {
+  submitFormEl.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const target = document.querySelector(anchor.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      document.getElementById('navLinks').classList.remove('mobile-open');
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+
+    const nameVal  = document.getElementById('name').value.trim();
+    const emailVal = document.getElementById('email').value.trim();
+    const phoneVal = document.getElementById('phone').value.trim();
+
+    const fileInputMap = { contractor: 'fileUpload', realest: 'fileUploadRE', homeowner: 'fileUploadHO' };
+    const activeFile   = document.getElementById(fileInputMap[selectedType]);
+
+    try {
+      const data = new FormData();
+      data.append('access_key',  'd2c0922f-9bf1-4648-8610-b34b63c78e5d');
+      data.append('subject',     '🏗️ New Project — TLS Studio (' + selectedType + ')');
+      data.append('from_name',   'TLS Studio Website');
+      data.append('redirect',    'false');
+      data.append('client_type', selectedType);
+      data.append('name',        nameVal);
+      data.append('email',       emailVal);
+      data.append('phone',       phoneVal || 'Not provided');
+
+      if (selectedType === 'contractor') {
+        data.append('company',         document.getElementById('company').value.trim());
+        data.append('project_type',    document.getElementById('projectType').value);
+        const services = [...document.querySelectorAll('#form-contractor input[name="services"]:checked')]
+          .map(c => c.value).join(', ');
+        data.append('services_needed', services || 'None selected');
+        data.append('project_address', document.getElementById('contractorAddress').value.trim());
+        data.append('timeline',        document.getElementById('timeline').value);
+
+      } else if (selectedType === 'realest') {
+        data.append('brokerage',        document.getElementById('brokerage').value.trim());
+        const services = [...document.querySelectorAll('#form-realest input[name="services"]:checked')]
+          .map(c => c.value).join(', ');
+        data.append('services_needed',  services || 'None selected');
+        const meas = document.querySelector('input[name="has_measurements"]:checked');
+        data.append('has_measurements', meas ? meas.value : 'Not specified');
+
+      } else if (selectedType === 'homeowner') {
+        data.append('project_goal', document.getElementById('projectGoal').value.trim());
+        const sketches = document.querySelector('input[name="has_sketches"]:checked');
+        data.append('has_sketches', sketches ? sketches.value : 'Not specified');
+        data.append('budget',       document.getElementById('budget').value);
+      }
+
+      if (activeFile && activeFile.files.length > 0) {
+        Array.from(activeFile.files).forEach(file => data.append('attachment', file));
+      }
+
+      const res    = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: data,
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        submitFormEl.classList.add('hidden');
+        step1El.style.display = 'none';
+        if (stepBar) stepBar.style.display = 'none';
+        successState.classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        throw new Error(result.message || 'Submission failed');
+      }
+    } catch {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Project →';
+      const subject = encodeURIComponent('New Project — ' + selectedType + ' — ' + nameVal);
+      const body    = encodeURIComponent('Name: ' + nameVal + '\nEmail: ' + emailVal + '\nType: ' + selectedType);
+      const prev = submitFormEl.querySelector('.error-banner');
+      if (prev) prev.remove();
+      submitFormEl.insertAdjacentHTML('afterbegin',
+        `<div class="error-banner">Form service unavailable. ` +
+        `<a href="mailto:support@thelayerstudio.dev?subject=${subject}&body=${body}">Send via email →</a></div>`);
     }
   });
-});
-
-
-// ====== MOBILE NAV STYLE ======
-const mobileStyle = document.createElement('style');
-mobileStyle.textContent = `
-  @media (max-width: 768px) {
-    .nav-links.mobile-open {
-      display: flex !important;
-      flex-direction: column;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(10,10,15,0.97);
-      backdrop-filter: blur(20px);
-      justify-content: center;
-      align-items: center;
-      gap: 32px;
-      z-index: 999;
-    }
-    .nav-links.mobile-open a {
-      font-size: 1.4rem;
-      color: #f0f0f5;
-    }
-  }
-`;
-document.head.appendChild(mobileStyle);
-
-console.log('The Layer Studio — Landing Page Loaded');
+}

@@ -3,534 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Layer Studio | Napkin Sketch to Permit-Ready Plans in 72 Hours</title>
-  <meta name="description" content="Ultra-fast architectural drafting. Turn hand-drawn sketches into professional 2D floor plans and stunning 3D models in just 72 hours. Skip the 3-week wait.">
+  <title>TLS Studio — Precision Drafting &amp; Architectural Services</title>
+  <meta name="description" content="From rough sketch to construction-ready. Permit-ready drawings, 3D visualizations, and technical documentation — delivered in 72 hours.">
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
 
-<!-- ====== NAVBAR ====== -->
-<nav class="navbar" id="navbar">
-  <a href="#" class="nav-logo">
-    <img src="images/logo.png" alt="The Layer Studio">
-    <span>The Layer Studio</span>
-  </a>
-  <div class="nav-links" id="navLinks">
-    <a href="#process">Process</a>
-    <a href="#services">Services</a>
-    <a href="#why">Why Us</a>
-    <a href="#testimonials">Reviews</a>
-    <a href="#cta" class="nav-cta">Get Started</a>
+<!-- NAV (transparent over video, darkens on scroll) -->
+<nav class="nav" id="mainNav">
+  <a href="index.html" class="nav-logo">TLS STUDIO</a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Work</a>
+    <a href="services.html">Services</a>
+    <a href="profile.html">Profile</a>
+    <a href="submit.html" class="nav-cta">Submit a Project</a>
   </div>
-  <div class="mobile-toggle" id="mobileToggle" onclick="document.getElementById('navLinks').classList.toggle('mobile-open')">
+  <button type="button" class="nav-toggle" id="navToggle" aria-label="Menu">
     <span></span><span></span><span></span>
-  </div>
+  </button>
 </nav>
 
-<!-- ====== HERO ====== -->
-<section class="hero" id="hero">
-  <!-- Fullscreen background video -->
-  <video class="hero-video" autoplay muted loop playsinline id="heroVideo">
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="index.html">Work</a>
+  <a href="services.html">Services</a>
+  <a href="profile.html">Profile</a>
+  <a href="submit.html" class="mobile-cta">Submit a Project</a>
+</div>
+
+<!-- ══════════════════════════════════════
+     HERO — full-screen video background
+═══════════════════════════════════════ -->
+<section class="hero">
+  <video class="hero-video" autoplay muted loop playsinline>
     <source src="The_Layer_Studio_is_an_202605091248.mp4" type="video/mp4">
   </video>
-
-  <!-- Dark overlay for text readability -->
   <div class="hero-overlay"></div>
 
-  <!-- Centered hero text content -->
   <div class="hero-content">
-    <div class="hero-badge"><span class="dot"></span> Ultra-Fast Architectural Drafting</div>
-    <h1>From Napkin Sketch to <span class="gradient-text">Permit-Ready Plans</span></h1>
-    <p class="subtitle">We transform your hand-drawn ideas into professional 2D floor plans and stunning 3D models — delivered in exactly <strong>72 hours</strong>, not three weeks.</p>
-    <div class="hero-buttons">
-      <a href="#cta" class="btn-primary">Start Your Project →</a>
-      <a href="#process" class="btn-secondary">See How It Works</a>
+    <span class="hero-badge">TLS Studio — Toronto, CA — Est. 2023</span>
+    <h1 class="hero-headline">Precision<br>Drafting.<br>Built Right.</h1>
+    <p class="hero-sub">From rough sketch to construction-ready. Permit drawings, 3D visualizations, and technical documentation — delivered in 72 hours.</p>
+    <div class="hero-actions">
+      <a href="submit.html" class="hero-btn">Submit a Project</a>
+      <a href="services.html" class="hero-link">Our Services →</a>
     </div>
   </div>
 
-  <div class="scroll-indicator">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
+  <span class="hero-scroll-hint">Scroll to explore</span>
 </section>
 
-<!-- ====== STATS BAR ====== -->
+<!-- ══════════════════════════════════════
+     STATS BAR
+═══════════════════════════════════════ -->
 <div class="stats-bar">
-  <div class="stat-item reveal">
-    <div class="stat-number" data-count="72">0</div>
-    <div class="stat-label">Hour Delivery</div>
+  <div class="stat-cell sr">
+    <div class="stat-big" data-count="500" data-suffix="+">0+</div>
+    <div class="stat-desc">Projects Delivered</div>
   </div>
-  <div class="stat-item reveal">
-    <div class="stat-number" data-count="100">0</div>
-    <div class="stat-label">Projects Delivered</div>
+  <div class="stat-cell sr d2">
+    <div class="stat-big">72h</div>
+    <div class="stat-desc">Average Turnaround</div>
   </div>
-  <div class="stat-item reveal">
-    <div class="stat-number" data-count="98">0</div>
-    <div class="stat-label">% Permit Approval</div>
-  </div>
-  <div class="stat-item reveal">
-    <div class="stat-number" data-count="85">0</div>
-    <div class="stat-label">% Cost Savings</div>
+  <div class="stat-cell sr d3">
+    <div class="stat-big" data-count="98" data-suffix="%">0%</div>
+    <div class="stat-desc">Client Satisfaction</div>
   </div>
 </div>
 
-<!-- ====== PROCESS SECTION ====== -->
-<section class="process-section" id="process">
-  <div class="section-label"><span class="line"></span> Our Process</div>
-  <h2 class="section-title reveal">Three Layers.<br><span class="gradient-text">One Seamless Journey.</span></h2>
-  <p class="section-subtitle reveal">From your initial concept to permit-ready deliverables — all in 72 hours.</p>
-
-  <div class="process-timeline">
-    <div class="process-line"></div>
-    <div class="process-line-fill" id="processLineFill"></div>
-
-    <div class="process-step">
-      <div class="process-step-content">
-        <span class="step-tag">Layer 1</span>
-        <h3>Napkin Sketch Upload</h3>
-        <p>Snap a photo of your hand-drawn sketch, napkin doodle, or rough concept. Our team analyzes your vision — no matter how rough — and begins the architectural translation process within the hour.</p>
-      </div>
-      <div class="process-step-number">1</div>
-      <div class="process-step-image">
-        <img src="images/napkin-sketch.png" alt="Hand-drawn architectural sketch">
-      </div>
+<!-- ══════════════════════════════════════
+     PROCESS STRIP — Sketch → CAD → 3D
+═══════════════════════════════════════ -->
+<div class="process-strip sr">
+  <div class="process-item">
+    <div class="process-img">
+      <img src="images/napkin-sketch.png" alt="Step 1 — Sketch">
     </div>
-
-    <div class="process-step">
-      <div class="process-step-image">
-        <img src="images/cad-floor-plan.png" alt="Professional 2D CAD floor plan">
-      </div>
-      <div class="process-step-number">2</div>
-      <div class="process-step-content">
-        <span class="step-tag">Layer 2</span>
-        <h3>Professional 2D CAD Plans</h3>
-        <p>Your sketch is transformed into precise, dimension-accurate 2D floor plans using industry-standard CAD software. Every wall, door, window, and fixture is placed to meet local building codes.</p>
-      </div>
-    </div>
-
-    <div class="process-step">
-      <div class="process-step-content">
-        <span class="step-tag">Layer 3</span>
-        <h3>Stunning 3D Model & Renders</h3>
-        <p>We bring your plans to life with photorealistic 3D models and renders. See your project from every angle before breaking ground — perfect for permits, investor presentations, and client approvals.</p>
-      </div>
-      <div class="process-step-number">3</div>
-      <div class="process-step-image">
-        <img src="images/3d-render.png" alt="3D architectural render">
-      </div>
+    <div class="process-meta">
+      <span class="process-num">01</span>
+      <span class="process-label">You Send a Sketch</span>
     </div>
   </div>
-</section>
-
-<!-- ====== SERVICES ====== -->
-<section class="services-section" id="services">
-  <div style="text-align:center;">
-    <div class="section-label" style="justify-content:center;"><span class="line"></span> Pricing <span class="line"></span></div>
-    <h2 class="section-title reveal" style="margin:0 auto 20px;">Simple, Transparent <span class="gradient-text">Pricing</span></h2>
-    <p class="section-subtitle reveal" style="margin:0 auto 32px;">Two packages. Flat rates. Everything included. No surprises.</p>
-    <!-- Sale Banner -->
-    <div class="sale-banner reveal">
-      <span class="sale-badge-flash">🔥 40% OFF</span>
-      <span>Grand Launch Special — 40% OFF All Packages!</span>
+  <div class="process-item">
+    <div class="process-img">
+      <img src="images/cad-floor-plan.png" alt="Step 2 — CAD Drawings">
+    </div>
+    <div class="process-meta">
+      <span class="process-num">02</span>
+      <span class="process-label">We Build the Drawings</span>
     </div>
   </div>
-
-  <div class="services-grid services-grid--three">
-    <!-- STANDARD TIER -->
-    <div class="service-card">
-      <div class="sale-ribbon">40% OFF</div>
-      <div class="service-image-wrapper">
-        <div class="service-image-badge">RESIDENTIAL ELITE</div>
-        <img src="images/pkg-standard.png" alt="Residential Elite Floor Plan">
-      </div>
-      <div class="service-content">
-        <div class="service-tier-label" style="margin-top: 24px;">Standard</div>
-        <h3>Under 1,000 sq. ft.</h3>
-        <p class="service-desc">Perfect for detached garages, deck additions, basement finishes, and small home additions.</p>
-        <div class="service-pricing">
-          <span class="service-price-old">$1,085</span>
-          <div class="service-price">$650 <span>/ flat rate</span></div>
-        </div>
-        <ul class="service-features">
-          <li>✓ Full 2D permit-ready floor plans</li>
-          <li>✓ Site plan included</li>
-          <li>✓ Stunning 3D renders</li>
-          <li>✓ Delivered in 72 hours</li>
-          <li>✓ 3 revisions included</li>
-        </ul>
-        <a href="#cta" class="btn-secondary" style="width:100%;text-align:center;margin-top:auto;" onclick="selectPackage('standard')">Get Started →</a>
-      </div>
+  <div class="process-item">
+    <div class="process-img">
+      <img src="images/3d-render.png" alt="Step 3 — 3D Render">
     </div>
-
-    <!-- PRO TIER -->
-    <div class="service-card service-card--featured">
-      <div class="sale-ribbon">40% OFF</div>
-      <div class="service-image-wrapper">
-        <div class="service-image-badge">COMMERCIAL PRO</div>
-        <img src="images/pkg-pro.png" alt="Commercial Pro Floor Plan">
-      </div>
-      <div class="service-content">
-        <div class="service-tier-badge" style="margin-top: 24px;">Most Popular</div>
-        <div class="service-tier-label">Pro</div>
-        <h3>Over 1,000 sq. ft.</h3>
-        <p class="service-desc">Perfect for full new home builds, whole-house renovations, and massive structural additions.</p>
-        <div class="service-pricing">
-          <span class="service-price-old">$1,415</span>
-          <div class="service-price">$850 <span>/ flat rate</span></div>
-        </div>
-        <ul class="service-features">
-          <li>✓ Full 2D permit-ready floor plans</li>
-          <li>✓ Site plan included</li>
-          <li>✓ Stunning 3D renders</li>
-          <li>✓ Delivered in 72 hours</li>
-          <li>✓ 3 revisions included</li>
-          <li>✓ Priority support</li>
-        </ul>
-        <a href="#cta" class="btn-primary" style="width:100%;text-align:center;justify-content:center;margin-top:auto;" onclick="selectPackage('pro')">Get Started →</a>
-      </div>
-    </div>
-
-    <!-- CUSTOM TIER -->
-    <div class="service-card">
-      <div class="sale-ribbon">40% OFF</div>
-      <div class="service-image-wrapper">
-        <div class="service-image-badge">CUSTOM BUILD</div>
-        <img src="images/pkg-custom.png" alt="Custom Build Floor Plan">
-      </div>
-      <div class="service-content">
-        <div class="service-tier-label" style="margin-top: 24px;">Custom</div>
-        <h3>Custom Quote</h3>
-        <p class="service-desc">Perfect for clients who want a tailored quote based on their specific project requirements.</p>
-        <div class="service-pricing">
-          <span class="service-price-old" style="visibility:hidden">Custom</span>
-          <div class="service-price">Quote <span>/ project</span></div>
-        </div>
-        <ul class="service-features">
-          <li>✓ Full 2D permit-ready floor plans</li>
-          <li>✓ Site plan included</li>
-          <li>✓ Stunning 3D renders</li>
-          <li>✓ Flexible delivery timeline</li>
-          <li>✓ 3 revisions included</li>
-          <li>✓ Dedicated project manager</li>
-        </ul>
-        <a href="#cta" class="btn-secondary" style="width:100%;text-align:center;margin-top:auto;" onclick="selectPackage('custom')">Get a Quote →</a>
-      </div>
+    <div class="process-meta">
+      <span class="process-num">03</span>
+      <span class="process-label">Construction-Ready</span>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ====== WHY US ====== -->
-<section class="why-section" id="why">
-  <div class="section-label"><span class="line"></span> Why The Layer Studio</div>
-  <h2 class="section-title reveal">Skip the <span class="gradient-text">3-Week Wait</span></h2>
-  <p class="section-subtitle reveal">Traditional draftsmen take weeks and charge thousands. We deliver in 72 hours at a fraction of the cost.</p>
 
-  <div class="why-grid">
-    <div class="why-features">
-      <div class="why-feature reveal-left">
-        <div class="why-feature-icon">⚡</div>
-        <div>
-          <h4>72-Hour Turnaround</h4>
-          <p>From sketch upload to permit-ready plans in exactly three days. No excuses, no delays.</p>
-        </div>
-      </div>
-      <div class="why-feature reveal-left">
-        <div class="why-feature-icon">💰</div>
-        <div>
-          <h4>85% Cost Savings</h4>
-          <p>Professional plans at a fraction of what traditional architectural firms charge.</p>
-        </div>
-      </div>
-      <div class="why-feature reveal-left">
-        <div class="why-feature-icon">✅</div>
-        <div>
-          <h4>98% Permit Approval Rate</h4>
-          <p>Our plans are drafted to meet local building codes, ensuring smooth permit approval.</p>
-        </div>
-      </div>
-      <div class="why-feature reveal-left">
-        <div class="why-feature-icon">🔄</div>
-        <div>
-          <h4>3 Revisions Included</h4>
-          <p>Not 100% happy? We include 3 rounds of revisions to ensure your plans are exactly right.</p>
-        </div>
-      </div>
-    </div>
-    <div class="why-image reveal-right">
-      <img src="images/cover.png" alt="The Layer Studio design evolution">
-      <div class="why-image-badge">
-        <div class="badge-icon">🏆</div>
-        <div class="badge-text">
-          <h5>Trusted by 100+ Clients</h5>
-          <p>Contractors, investors, and homeowners across the GTA</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- ══════════════════════════════════════
+     FOOTER CTA
+═══════════════════════════════════════ -->
+<a href="submit.html" class="footer-cta sr">
+  <span class="footer-cta-text">Have a project?<br>Let's get started.</span>
+  <span class="footer-cta-arrow">→</span>
+</a>
 
-<!-- ====== TESTIMONIALS ====== -->
-<section class="testimonials-section" id="testimonials">
-  <div style="text-align:center;">
-    <div class="section-label" style="justify-content:center;"><span class="line"></span> Testimonials <span class="line"></span></div>
-    <h2 class="section-title reveal" style="margin:0 auto 20px;">What Our <span class="gradient-text">Clients Say</span></h2>
-    <p class="section-subtitle reveal" style="margin:0 auto 60px;">Real results from real builders, investors, and homeowners across the GTA.</p>
-  </div>
-
-  <!-- Scrolling marquee row 1 -->
-  <div class="marquee">
-    <div class="marquee-track">
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-text">"Sketched a laneway suite on a napkin at a café in Leslieville. 72 hours later I had permit-ready CAD drawings. My usual draftsman quoted $3,500 and a 4-week wait. These guys saved me thousands."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar"><img src="images/marcus.png" alt="Marcus D."></div>
-          <div>
-            <div class="testimonial-name">Marcus D.</div>
-            <div class="testimonial-role">General Contractor, Scarborough</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-text">"Three investment properties needed drawings before closing. Traditional firms wanted $2,000+ each. The Layer Studio did all three in under a week. The 3D renders sealed the deal with our lender."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar"><img src="images/priya.png" alt="Priya S."></div>
-          <div>
-            <div class="testimonial-name">Priya S.</div>
-            <div class="testimonial-role">Real Estate Investor, Mississauga</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-text">"Added a second storey to our bungalow. Had no clue how to present it to the city. Sent them a rough sketch and got back stunning floor plans and 3D renders. Permit approved on the first try."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar"><img src="images/nguyen.png" alt="The Nguyen Family"></div>
-          <div>
-            <div class="testimonial-name">The Nguyen Family</div>
-            <div class="testimonial-role">Homeowners, North York</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-text">"I flip houses in Brampton and speed is everything. The Layer Studio cut my drafting costs by 60% and I get plans back before the ink dries on the purchase agreement. Can't run my business without them now."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar"><img src="images/david.png" alt="David R."></div>
-          <div>
-            <div class="testimonial-name">David R.</div>
-            <div class="testimonial-role">House Flipper, Brampton</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★ ★ ★ ★ ☆</div>
-        <p class="testimonial-text">"Needed a garage conversion drawn up for a rental unit. Got the plans in 3 days, submitted to the city the same week. Only suggestion — would love even faster turnaround for rush jobs. Otherwise A+."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar"><img src="images/fatima.png" alt="Fatima K."></div>
-          <div>
-            <div class="testimonial-name">Fatima K.</div>
-            <div class="testimonial-role">Property Manager, Etobicoke</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-text">"My architect ghosted me mid-project. The Layer Studio picked up my half-finished sketches and delivered complete permit drawings in 4 days. Literally saved my renovation timeline. Highly recommend."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar"><img src="images/james_lisa.png" alt="James & Lisa T."></div>
-          <div>
-            <div class="testimonial-name">James & Lisa T.</div>
-            <div class="testimonial-role">Homeowners, Oakville</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-text">"I run a small contracting company and we do 15–20 projects a year. Since switching to The Layer Studio, our drafting budget dropped from $40K/year to under $15K. The quality is honestly better too."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar"><img src="images/tony.png" alt="Tony M."></div>
-          <div>
-            <div class="testimonial-name">Tony M.</div>
-            <div class="testimonial-role">Owner, M&T Contracting, Vaughan</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-text">"Bought a teardown in East York. Needed new-build plans fast to lock in my construction loan. The Layer Studio had full 2D plans and beautiful 3D renders ready in 72 hours flat. Bank was impressed."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar"><img src="images/rachel.png" alt="Rachel W."></div>
-          <div>
-            <div class="testimonial-name">Rachel W.</div>
-            <div class="testimonial-role">Developer, East York</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ====== CTA / CONTACT FORM ====== -->
-<section class="cta-section" id="cta">
-  <h2 class="reveal">Ready to <span class="gradient-text">Build</span>?</h2>
-  <p class="reveal">Upload your sketch and tell us about your project. We'll get back to you within 2 hours.</p>
-
-  <form class="contact-form reveal" id="contactForm" action="https://formsubmit.co/support@thelayerstudio.dev" method="POST" enctype="multipart/form-data">
-    <!-- Formsubmit config -->
-    <input type="hidden" name="_subject" value="🏗️ New Project Submission — The Layer Studio">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_next" value="https://thelayerstudio.net/thankyou.html">
-    <input type="hidden" name="_template" value="table">
-    <input type="hidden" name="_autoresponse" value="Thank you for choosing The Layer Studio! If you selected a Standard or Pro package, this email serves as your formal deposit invoice (Standard: $325 CAD | Pro: $425 CAD). If you selected Custom Quote, our team will review your project and send you a custom invoice shortly. Please send your deposit via Interac e-Transfer to payment@thelayerstudio.dev. Once your transfer is received, our drafting team will begin immediately!">
-
-    <!-- Package Selection -->
-    <div class="form-group">
-      <label>Select Your Package *</label>
-      <div class="package-selector">
-        <label class="package-option" id="pkgStandard">
-          <input type="radio" name="package" value="Standard — $650" required>
-          <div class="package-option-content">
-            <div class="package-option-header">
-              <span class="package-option-name">📐 Standard</span>
-              <span class="package-option-price">$650</span>
-            </div>
-            <span class="package-option-desc">Under 1,000 sq. ft.</span>
-            <div class="package-deposit-info">
-              <span>50% deposit to start:</span>
-              <strong>$325 CAD</strong>
-            </div>
-          </div>
-        </label>
-        <label class="package-option" id="pkgPro">
-          <input type="radio" name="package" value="Pro — $850">
-          <div class="package-option-content">
-            <div class="package-option-header">
-              <span class="package-option-name">🏗️ Pro</span>
-              <span class="package-option-price">$850</span>
-            </div>
-            <span class="package-option-desc">Over 1,000 sq. ft.</span>
-            <div class="package-deposit-info">
-              <span>50% deposit to start:</span>
-              <strong>$425 CAD</strong>
-            </div>
-          </div>
-        </label>
-        <label class="package-option" id="pkgCustom">
-          <input type="radio" name="package" value="Custom Quote">
-          <div class="package-option-content">
-            <div class="package-option-header">
-              <span class="package-option-name">🏛️ Custom</span>
-              <span class="package-option-price">Quote</span>
-            </div>
-            <span class="package-option-desc">Custom Requirements</span>
-            <div class="package-deposit-info">
-              <span>Deposit to start:</span>
-              <strong>Custom</strong>
-            </div>
-          </div>
-        </label>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="fullName">Full Name *</label>
-        <input type="text" id="fullName" name="fullName" placeholder="John Smith" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email *</label>
-        <input type="email" id="email" name="email" placeholder="john@example.com" required>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label for="phone">Phone</label>
-        <input type="tel" id="phone" name="phone" placeholder="(416) 555-0123">
-      </div>
-      <div class="form-group">
-        <label for="projectType">Project Type *</label>
-        <select id="projectType" name="projectType" required>
-          <option value="" disabled selected>Select your project</option>
-          <option value="Detached Garage">Detached Garage</option>
-          <option value="Home Addition">Home Addition</option>
-          <option value="Basement Finish">Basement Finish</option>
-          <option value="Deck / Patio">Deck / Patio</option>
-          <option value="Whole-House Renovation">Whole-House Renovation</option>
-          <option value="New Home Build">New Home Build</option>
-          <option value="Laneway Suite / ADU">Laneway Suite / ADU</option>
-          <option value="Commercial">Commercial</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="description">Project Description *</label>
-      <textarea id="description" name="description" rows="4" placeholder="Tell us about your project — size, what you need, any details that help us understand your vision..." required></textarea>
-    </div>
-    <div class="form-group">
-      <label for="sketchUpload">Upload Your Sketch (optional)</label>
-      <div class="file-upload" id="fileUploadArea">
-        <input type="file" id="sketchUpload" name="attachment" accept="image/*,.pdf" multiple style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
-        <div class="file-upload-content" onclick="document.getElementById('sketchUpload').click()">
-          <span class="file-upload-icon">📎</span>
-          <span class="file-upload-text">Click to upload or drag & drop</span>
-          <span class="file-upload-hint">PNG, JPG, PDF — Max 10MB</span>
-        </div>
-        <div class="file-upload-preview" id="filePreview"></div>
-      </div>
-    </div>
-    <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:18px;font-size:1rem;" id="submitBtn">
-      Submit Project →
-    </button>
-    <p class="form-note">🔒 Secure submission · You will receive an invoice for the 50% deposit to start</p>
-  </form>
-</section>
-
-<!-- ====== FOOTER ====== -->
 <footer class="footer">
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="#" class="nav-logo">
-        <img src="images/logo.png" alt="The Layer Studio" style="height:36px;width:36px;">
-        <span>The Layer Studio</span>
-      </a>
-      <p>Ultra-fast architectural drafting. From napkin sketches to permit-ready 2D floor plans and stunning 3D models in 72 hours.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Services</h4>
-      <a href="#services">2D Floor Plans</a>
-      <a href="#services">3D Models</a>
-      <a href="#services">Full Package</a>
-      <a href="#services">Rush Delivery</a>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <a href="#process">Our Process</a>
-      <a href="#why">Why Us</a>
-      <a href="#testimonials">Reviews</a>
-      <a href="#cta">Contact</a>
-    </div>
-    <div class="footer-col">
-      <h4>Contact</h4>
-      <a href="mailto:support@thelayerstudio.dev">support@thelayerstudio.dev</a>
-      <a href="tel:+14379371212">(437) 937-1212</a>
-      <a href="#">Toronto, ON</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 The Layer Studio. All rights reserved.</p>
-    <div class="footer-socials">
-      <a href="https://www.instagram.com/tlsdraft/" target="_blank" aria-label="Instagram">IG</a>
-      <a href="https://www.facebook.com/profile.php?id=61588958323891" target="_blank" aria-label="Facebook">FB</a>
-    </div>
-  </div>
+  <span class="footer-copy">© 2025 The Layer Studio. All rights reserved.</span>
+  <nav class="footer-nav">
+    <a href="services.html">Services</a>
+    <a href="profile.html">Profile</a>
+    <a href="submit.html">Contact</a>
+  </nav>
 </footer>
 
-<script>window.WEB3FORMS_KEY = 'd2c0922f-9bf1-4648-8610-b34b63c78e5d';</script>
 <script src="app.js"></script>
 </body>
 </html>

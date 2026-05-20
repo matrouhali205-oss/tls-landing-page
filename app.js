@@ -118,6 +118,10 @@ function initSubmitForm() {
   });
 
   nextBtn.addEventListener('click', () => {
+    // Read selection directly from DOM — more reliable than relying on change event alone
+    const checkedRadio = document.querySelector('input[name="clientType"]:checked');
+    if (checkedRadio) selectedType = checkedRadio.value;
+
     if (!selectedType) {
       const cards = document.querySelector('.client-cards');
       cards.style.outline = '1.5px solid #c9a84c';

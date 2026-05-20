@@ -241,8 +241,11 @@ function initSubmitForm() {
         data.append('budget',       document.getElementById('budget').value);
       }
 
+      // File attachments require Web3Forms Pro — instead we list filenames as text
+      // so you know to ask the client to reply with their files
       if (activeFile && activeFile.files.length > 0) {
-        Array.from(activeFile.files).forEach(file => data.append('attachment', file));
+        const fileNames = Array.from(activeFile.files).map(f => f.name).join(', ');
+        data.append('files_to_request', `Client has ${activeFile.files.length} file(s) ready to send: ${fileNames} — please reply to their email to request them.`);
       }
 
       const res    = await fetch('https://api.web3forms.com/submit', {

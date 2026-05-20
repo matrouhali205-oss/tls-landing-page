@@ -103,13 +103,13 @@ if (step1El && submitFormEl) {
 }
 
 function initSubmitForm() {
-  const nextBtn      = document.getElementById('nextBtn');
-  const backBtn      = document.getElementById('backBtn');
-  const dot1         = document.getElementById('dot1');
-  const dot2         = document.getElementById('dot2');
-  const stepLabel    = document.getElementById('stepLabel');
+  const nextBtn = document.getElementById('nextBtn');
+  const backBtn = document.getElementById('backBtn');
+  const dot1 = document.getElementById('dot1');
+  const dot2 = document.getElementById('dot2');
+  const stepLabel = document.getElementById('stepLabel');
   const successState = document.getElementById('successState');
-  const stepBar      = document.querySelector('.step-bar');
+  const stepBar = document.querySelector('.step-bar');
 
   let selectedType = '';
 
@@ -150,21 +150,21 @@ function initSubmitForm() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  wireUpload('fileUpload',   'fileChips',   'uploadZone');
+  wireUpload('fileUpload', 'fileChips', 'uploadZone');
   wireUpload('fileUploadRE', 'fileChipsRE', 'uploadZoneRE');
   wireUpload('fileUploadHO', 'fileChipsHO', 'uploadZoneHO');
 
   function wireUpload(inputId, chipsId, zoneId) {
     const input = document.getElementById(inputId);
     const chips = document.getElementById(chipsId);
-    const zone  = document.getElementById(zoneId);
+    const zone = document.getElementById(zoneId);
     if (!input || !chips) return;
 
     input.addEventListener('change', () => renderChips(input, chips));
 
     if (zone) {
-      zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('over'); });
-      zone.addEventListener('dragleave', ()  => zone.classList.remove('over'));
+      zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+      zone.addEventListener('dragleave', () => zone.classList.remove('over'));
       zone.addEventListener('drop', e => {
         e.preventDefault();
         zone.classList.remove('over');
@@ -173,7 +173,7 @@ function initSubmitForm() {
       });
     }
 
-    window['removeChip_' + inputId] = function(index) {
+    window['removeChip_' + inputId] = function (index) {
       const dt = new DataTransfer();
       Array.from(input.files).forEach((f, i) => { if (i !== index) dt.items.add(f); });
       input.files = dt.files;
@@ -193,6 +193,19 @@ function initSubmitForm() {
     });
   }
 
+  // Helper: convert a File object → { name, type, data: base64 }
+  function fileToBase64(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve({
+        name: file.name,
+        type: file.type,
+        data: reader.result.split(',')[1], // strip "data:...;base64," prefix
+      });
+      reader.readAsDataURL(file);
+    });
+  }
+
   submitFormEl.addEventListener('submit', async (e) => {
     e.preventDefault();
     const submitBtn = document.getElementById('submitBtn');
@@ -204,57 +217,55 @@ function initSubmitForm() {
     const phoneVal = document.getElementById('phone').value.trim();
 
     const fileInputMap = { contractor: 'fileUpload', realest: 'fileUploadRE', homeowner: 'fileUploadHO' };
-    const activeFile   = document.getElementById(fileInputMap[selectedType]);
+    const activeFile = document.getElementById(fileInputMap[selectedType]);
 
     try {
-      const data = new FormData();
-      data.append('access_key',  '04046661-ae67-42d9-b452-cb46f0b36a20');
-      data.append('subject',     '🏗️ New Project — TLS Studio (' + selectedType + ')');
-      data.append('from_name',   'TLS Studio Website');
-      data.append('redirect',    'false');
-      data.append('client_type', selectedType);
-      data.append('name',        nameVal);
-      data.append('email',       emailVal);
-      data.append('phone',       phoneVal || 'Not provided');
+      // ── Build payload ──
+      const payload = {
+        client_type: selectedType,
+        name:  nameVal,
+        email: emailVal,
+        phone: phoneVal || 'Not provided',
+        attachments: [],
+      };
 
       if (selectedType === 'contractor') {
-        data.append('company',         document.getElementById('company').value.trim());
-        data.append('project_type',    document.getElementById('projectType').value);
-        const services = [...document.querySelectorAll('#form-contractor input[name="services"]:checked')]
-          .map(c => c.value).join(', ');
-        data.append('services_needed', services || 'None selected');
-        data.append('project_address', document.getElementById('contractorAddress').value.trim());
-        data.append('timeline',        document.getElementById('timeline').value);
+        payload.company         = document.getElementById('company').value.trim();
+        payload.project_type    = document.getElementById('projectType').value;
+        payload.services_needed = [...document.querySelectorAll('#form-contractor input[name="services"]:checked')]
+          .map(c => c.value).join(', ') || 'None selected';
+        payload.project_address = document.getElementById('contractorAddress').value.trim();
+        payload.timeline        = document.getElementById('timeline').value;
 
       } else if (selectedType === 'realest') {
-        data.append('brokerage',        document.getElementById('brokerage').value.trim());
-        const services = [...document.querySelectorAll('#form-realest input[name="services"]:checked')]
-          .map(c => c.value).join(', ');
-        data.append('services_needed',  services || 'None selected');
-        const meas = document.querySelector('input[name="has_measurements"]:checked');
-        data.append('has_measurements', meas ? meas.value : 'Not specified');
+        payload.brokerage        = document.getElementById('brokerage').value.trim();
+        payload.services_needed  = [...document.querySelectorAll('#form-realest input[name="services"]:checked')]
+          .map(c => c.value).join(', ') || 'None selected';
+        const meas               = document.querySelector('input[name="has_measurements"]:checked');
+        payload.has_measurements = meas ? meas.value : 'Not specified';
 
       } else if (selectedType === 'homeowner') {
-        data.append('project_goal', document.getElementById('projectGoal').value.trim());
-        const sketches = document.querySelector('input[name="has_sketches"]:checked');
-        data.append('has_sketches', sketches ? sketches.value : 'Not specified');
-        data.append('budget',       document.getElementById('budget').value);
+        payload.project_goal = document.getElementById('projectGoal').value.trim();
+        const sketches       = document.querySelector('input[name="has_sketches"]:checked');
+        payload.has_sketches = sketches ? sketches.value : 'Not specified';
+        payload.budget       = document.getElementById('budget').value;
       }
 
-      // File attachments require Web3Forms Pro — instead we list filenames as text
-      // so you know to ask the client to reply with their files
+      // ── Convert files to base64 ──
       if (activeFile && activeFile.files.length > 0) {
-        const fileNames = Array.from(activeFile.files).map(f => f.name).join(', ');
-        data.append('files_to_request', `Client has ${activeFile.files.length} file(s) ready to send: ${fileNames} — please reply to their email to request them.`);
+        payload.attachments = await Promise.all(
+          Array.from(activeFile.files).map(fileToBase64)
+        );
       }
 
-      const res    = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: data,
+      // ── POST JSON to our Vercel serverless function ──
+      const res    = await fetch('/api/submit', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body:    JSON.stringify(payload),
       });
       const result = await res.json();
-      console.log('Web3Forms response:', result);
+      console.log('Submit response:', result);
 
       if (result.success) {
         submitFormEl.classList.add('hidden');
@@ -275,7 +286,7 @@ function initSubmitForm() {
       if (prev) prev.remove();
       const errMsg = err.message ? ` (${err.message})` : '';
       submitFormEl.insertAdjacentHTML('afterbegin',
-        `<div class="error-banner">Form error${errMsg}. ` +
+        `<div class="error-banner">Submission error${errMsg}. ` +
         `<a href="mailto:support@thelayerstudio.dev?subject=${subject}&body=${body}">Send via email →</a></div>`);
     }
   });

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vercel *)",
+      "WebFetch(domain:tls-landing-page.vercel.app)",
+      "WebFetch(domain:thelayerstudio.net)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
+    ]
+  }
+}
